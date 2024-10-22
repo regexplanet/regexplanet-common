@@ -14,3 +14,5 @@ export type TestOutput = {
   html?: string;
   message?: string;
 };
+
+export type runTestFn = (input: TestInput) => Promise<TestOutput>;

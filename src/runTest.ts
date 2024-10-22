@@ -1,4 +1,4 @@
-import { type TestInput, type TestOutput } from "./types.ts";
+import { type runTestFn, type TestInput, type TestOutput } from "./types.ts";
 
 function h(unsafe: string): string {
   if (unsafe == null) {
@@ -13,9 +13,9 @@ function h(unsafe: string): string {
     .replace(/'/g, "&#039;");
 }
 
-export function runTest(input: TestInput): TestOutput {
+export const runTest:runTestFn = (input: TestInput) => {
   if (input.regex == null || input.regex.length == 0) {
-    return { success: false, message: "No regex to test!" };
+    return Promise.resolve({ success: false, message: "No regex to test!" });
   }
 
   const options = input.options ? input.options.join("") : undefined;
@@ -52,11 +52,11 @@ export function runTest(input: TestInput): TestOutput {
     compileTest = new RegExp(input.regex, options);
   } catch (err) {
     const message = err instanceof Error ? err.message : `unknown error ${err}`;
-    return {
+    return Promise.resolve({
       success: false,
       message: `Unable to create RegExp object: ${message}`,
       html: html.join(""),
-    };
+    });
   }
 
   try {
@@ -195,15 +195,15 @@ export function runTest(input: TestInput): TestOutput {
     html.push("</table>\n");
   } catch (err) {
     const message = err instanceof Error ? err.message : `unknown error ${err}`;
-    return {
+    return Promise.resolve({
       success: false,
       message: `Unable to run tests: ${message}`,
       html: html.join(""),
-    };
+    });
   }
 
-  return {
+  return Promise.resolve({
     success: true,
     html: html.join(""),
-  };
+  });
 }

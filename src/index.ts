@@ -1,8 +1,4 @@
 import { runTest } from './runTest.ts';
-import { type TestInput, type TestOutput } from './types.ts';
+import { type runTestFn, type TestInput, type TestOutput } from './types.ts';
 
-export {
-    TestInput,
-    TestOutput,
-    runTest,
-}
+export { runTest, runTestFn, TestInput, TestOutput };

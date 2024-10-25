@@ -175,7 +175,7 @@ export const runTest:runTestFn = (input: TestInput) => {
             html.push(`${regex.lastIndex}`);
             html.push("</td>\n");
 
-            result = regex.exec(target);
+            result = regex.lastIndex == 0 ? null : regex.exec(target);  // prevent infinite loop when global flag not set
           }
         }
         html.push("\t\t</tr>\n");
